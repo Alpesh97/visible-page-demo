@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visibly.js demo</title>
+
+    <!-- for more informarion -->
+    <!-- https://github.com/addyosmani/visibly.js -->
+
+	<style>
+		.video-wrapper{
+			text-align: center;
+    		margin: 100px auto 0;
+    		max-width: 550px;
+		}
+		.video-wrapper video{
+			width: 100%;
+		}
+		p{
+			text-align: center;
+		}
+		#message{
+			z-index: 20;
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    bottom: 0;
+		    right: 0;
+		    background-color: rgba(0, 0, 0, 0.8);
+		    color: white;
+		    font-size: 2em;
+		    font-weight: bold;
+		    text-transform: uppercase;
+		    vertical-align: middle;
+		    line-height: 12em;
+		    display: none;
+		    text-align: center;
+		    display: none;
+		}
+	</style>
+
+</head>
+<body>
+	<div class="video-wrapper">
+		<video controls autoplay id="video" muted="">
+		  <source src="demo.mp4" type="video/mp4">
+		</video>
+		<!-- <iframe src="https://www.youtube.com/embed/IP7uGKgJL8U?&autoplay=1" id="video"  allowscriptaccess="always" allow="autoplay" ></iframe> -->
+	</div>	
+	<div id="message" data-message="">You Are Here!!</div>
+
+	<script type="text/javascript">
+
+	var video = document.getElementById('video');
+	var ms = document.getElementById('message');
+
+	/////////////////////////////////////////
+	// check if current tab is active or not
+	var vis = (function(){
+	    var stateKey, 
+	        eventKey, 
+	        keys = {
+	                hidden: "visibilitychange",
+	                webkitHidden: "webkitvisibilitychange",
+	                mozHidden: "mozvisibilitychange",
+	                msHidden: "msvisibilitychange"
+	    };
+	    for (stateKey in keys) {
+	        // if (document.visibilityState == "hidden") {
+	        if (stateKey in document) {
+	            eventKey = keys[stateKey];
+	            break;
+	        }
+	    }
+	    return function(c) {
+	        if (c) document.addEventListener(eventKey, c);
+	        return !document[stateKey];
+	    }
+	})();
+
+
+	/////////////////////////////////////////
+	// check if current tab is active or not
+	vis(function(){
+	                    
+	    if(vis()){  
+	          setTimeout(function(){ 
+	          	ms.style.display = "none";
+	            video.play();
+	        },300);     
+	                                                
+	    } else {
+	        ms.style.display = "block";
+	        video.pause();
+	        
+	    }
+	});
+
+
+/////////////////////////////////////////
+// check if browser window has focus        
+
+    // bind focus event
+    window.addEventListener("focus", function (event) {
+      
+        setTimeout(function(){                 
+            ms.style.display = "none";
+        	video.play();
+        },300);
+
+    }, false);
+
+    // bind blur event
+    window.addEventListener("blur", function (event) {
+
+		ms.style.display = "block";
+    	video.pause();
+
+    }, false);
+
+
+	</script>
+</body>
+</html>
